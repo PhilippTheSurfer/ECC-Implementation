@@ -12,9 +12,9 @@ class EllipticCurve:
 
     def calculatesPointsOnElipticcurve(self: object) -> list:
         ListOfPointsOnCurve = []
-        for x in range(0, EC.p):
-            for y in range(0, EC.p):
-                if (y ** 2) % EC.p == (x ** 3 + EC.a * x + EC.b) % EC.p:
+        for x in range(0, self.p):
+            for y in range(0, self.p):
+                if (y ** 2) % self.p == (x ** 3 + self.a * x + self.b) % self.p:
                     ListOfPointsOnCurve.append((x, y))
         return ListOfPointsOnCurve
 
@@ -35,8 +35,19 @@ class Point:
             return False
 
     def calculatesOrderOfPoint(EC: object, P: object) -> int:
-        # calculates Foobar
-        return None
+        count = 1
+        T = P
+        while not Point.isInfinityPoint(T):
+            T = P + T
+            count += 1
+        return count
+    
+    def isInfinityPoint(P: object) -> bool:
+        if P.x is None and P.y is None:
+            return True
+        else:
+            return False
+
 
 
 def definesOperationToDo(EC: object, P: object, Q: object) -> bool:
@@ -56,7 +67,7 @@ def addThePoint(EC: object, P:object, Q: object) -> tuple:
 
 
 
-def doubleThePoint(EC: object, P: object):
+def doubleThePoint(EC: object, P: object) -> tuple:
     firsthalf = (3 * P.x ** 2 + EC.a) % EC.p
 #    print("firsthalf of s: " + str(firsthalf))
     secondhalf = (2 * P.y * 1)
