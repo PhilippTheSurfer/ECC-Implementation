@@ -5,7 +5,7 @@ import math
 
 class EllipticCurve:
 
-    def __init__(self, a: int, b: int, p:int):
+    def __init__(self, a: int, b: int, p: int):
         self.a: int = a
         self.b: int = b
         self.p: int = p
@@ -41,7 +41,7 @@ class Point:
             T = P + T
             count += 1
         return count
-    
+
     def isInfinityPoint(P: object) -> bool:
         if P.x is None and P.y is None:
             return True
@@ -49,13 +49,12 @@ class Point:
             return False
 
 
-
 def definesOperationToDo(EC: object, P: object, Q: object) -> bool:
     if P.x % EC.p == Q.x % EC.p and P.y % EC.p == Q.y % EC.p:
         return True
     else:
         return False
-    
+
 
 def addThePoint(EC: object, P:object, Q: object) -> tuple:
     firsthalf = (Q.y - P.y) % EC.p
@@ -64,7 +63,6 @@ def addThePoint(EC: object, P:object, Q: object) -> tuple:
     x_3 = (s ** 2 - P.x - P.x) % EC.p
     y_3 = (s * (P.x - x_3) - P.y) % EC.p
     print("The sum of P and Q on the ElliptivCurve: y^2 = x^3 + " + str(EC.a) + "*x + " + str(EC.b) + " mod " + str(EC.p) + " is: \n" " 2P = (" + str(x_3) + ", " + str(y_3) + ")")
-
 
 
 def doubleThePoint(EC: object, P: object) -> tuple:
@@ -103,9 +101,9 @@ def advencedEuclidAlgorithm(x: int, y: int) -> int:
 #        print(str(ti[i]) +  "-" + str(ti[i+1]) + "*" + str(ri[i]) + "=" + str(ti[i] - ti[i+1] * ri[i]))
 #    print("This is ti:  " + str(ti))
     while ti[len(ti)-1] <= 0:
-        ti[len(ti)-1] + x
+        ti[len(ti)-1] = ti[len(ti)-1] + x
 #    print(ti[len(ti)-1])
-    return(int(ti[len(ti)-1]))
+    return int(ti[len(ti)-1])
 
 
 def ggT(x: int, y: int) -> list:
@@ -122,12 +120,14 @@ def ggT(x: int, y: int) -> list:
 
 def main(EC: object, P: object, Q: object):
     """
-        Add a workflow for the code 
+        Add a workflow for the code
     """
 
 
-EC = EllipticCurve(2, 2, 17)
-P = Point(7, 6)
-Q = Point(3, 5)
+if __name__ == "__main__":
+    EC = EllipticCurve(2, 2, 17)
+    P = Point(7, 6)
+    Q = Point(3, 5)
 
-addThePoint(EC, P, Q)
+    addThePoint(EC, P, Q)
+    print(__name__)

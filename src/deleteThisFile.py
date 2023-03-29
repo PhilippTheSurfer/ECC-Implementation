@@ -1,5 +1,6 @@
 #
 
+from calculate_on_ECC import EllipticCurve
 import math
 
 
@@ -15,11 +16,9 @@ def advencedEuclidAlgorithm(EC: object, x: int, y: int) -> int:
         ti.append(ti[i] - ti[i+1] * ri[i])
     print("This is ti:  " + str(ti))
     while ti[len(ti)-1] <= 0:
-        ti[len(ti)-1] + EC.p
+        ti[len(ti)-1] = ti[len(ti)-1] + EC.p
     print(ti[len(ti)-1])
-    return(ti[len(ti)-1])
-    
-
+    return ti[len(ti)-1]
 
 
 def ggT(x, y) -> list:
@@ -41,6 +40,8 @@ def ggT(x, y) -> list:
 #    return ggTSteps
 
 
+EC = EllipticCurve(2, 2, 17)
 x = 19
 y = 17
-advencedEuclidAlgorithm(x, y)
+advencedEuclidAlgorithm(EC=EC, x=x, y=y)
+print(__name__)
