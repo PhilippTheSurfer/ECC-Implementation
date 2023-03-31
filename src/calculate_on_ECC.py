@@ -1,16 +1,21 @@
 # The code executes mathimatical Operations on a vaild Elliptic Curve.
 
 import math
-
+from sympy import isprime
 
 class EllipticCurve:
 
     def __init__(self, a: int, b: int, p: int):
+        if not isprime(p):
+            raise ValueError("p is not prime.")
+        if not ((4 * a ** 3) + (27 * b ** 2)) % p != 0:
+            raise ValueError("a,b,p do not meet ECC equation Requirement")
         self.a: int = a
         self.b: int = b
         self.p: int = p
 
-    def calculatesPointsOnElipticcurve(self: object) -> list:
+
+    def calculatesPointsOnElipticcurve(self) -> list:
         ListOfPointsOnCurve = []
         for x in range(0, self.p):
             for y in range(0, self.p):
@@ -28,53 +33,54 @@ class Point:
         self.x: int = x
         self.y: int = y
 
-    def checksIfPointOnCurve(self: object, EC: object) -> bool:
-        if (self.y ** 2) % EC.p == (self.x ** 3 + EC.a * self.x + EC.b) % EC.p:
+    def checksIfPointOnCurve(self, ec: EllipticCurve) -> bool:
+        if (self.y ** 2) % ec.p == (self.x ** 3 + ec.a * self.x + ec.b) % ec.p:
             return True
         else:
+            print("The Point provided is not on the Curve")
             return False
 
-    def calculatesOrderOfPoint(EC: object, P: object) -> int:
+    def calculatesOrderOfPoint(self) -> int:
         count = 1
-        T = P
+        T = p
         while not Point.isInfinityPoint(T):
-            T = P + T
+            T = p + T
             count += 1
         return count
 
-    def isInfinityPoint(P: object) -> bool:
-        if P.x is None and P.y is None:
+    def isInfinityPoint(self) -> bool:
+        if p.x is None and p.y is None:
             return True
         else:
             return False
 
 
-def definesOperationToDo(EC: object, P: object, Q: object) -> bool:
-    if P.x % EC.p == Q.x % EC.p and P.y % EC.p == Q.y % EC.p:
+def pointsEqual(ec: EllipticCurve, p: Point, q: Point) -> bool:
+    if p.x % ec.p ==   q.x % ec.p and p.y % ec.p ==   q.y % ec.p:
         return True
     else:
         return False
 
 
-def addThePoint(EC: object, P:object, Q: object) -> tuple:
-    firsthalf = (Q.y - P.y) % EC.p
-    secondhalf = (Q.x - P.x)
-    s = firsthalf * advencedEuclidAlgorithm(EC.p, secondhalf) % EC.p
-    x_3 = (s ** 2 - P.x - P.x) % EC.p
-    y_3 = (s * (P.x - x_3) - P.y) % EC.p
-    print("The sum of P and Q on the ElliptivCurve: y^2 = x^3 + " + str(EC.a) + "*x + " + str(EC.b) + " mod " + str(EC.p) + " is: \n" " 2P = (" + str(x_3) + ", " + str(y_3) + ")")
+def addThePoint(ec: EllipticCurve, p: Point,  q: Point) -> tuple:
+    firsthalf = (  q.y - p.y) % ec.p
+    secondhalf = ( q.x - p.x)
+    s = firsthalf * advencedEuclidAlgorithm(ec.p, secondhalf) % ec.p
+    x_3 = (s ** 2 - p.x - p.x) % ec.p
+    y_3 = (s * (p.x - x_3) - p.y) % ec.p
+    print("The sum of p and    q on the ElliptivCurve: y^2 = x^3 + " + str(ec.a) + "*x + " + str(ec.b) + " mod " + str(ec.p) + " is: \n" " 2P = (" + str(x_3) + ", " + str(y_3) + ")")
 
 
-def doubleThePoint(EC: object, P: object) -> tuple:
-    firsthalf = (3 * P.x ** 2 + EC.a) % EC.p
+def doubleThePoint(ec: EllipticCurve, p: Point) -> tuple:
+    firsthalf = (3 * p.x ** 2 + ec.a) % ec.p
 #    print("firsthalf of s: " + str(firsthalf))
-    secondhalf = (2 * P.y * 1)
+    secondhalf = (2 * p.y * 1)
 #    print("secondhalf of s: " + str(secondhalf))
-    s = firsthalf * advencedEuclidAlgorithm(EC.p, secondhalf) % EC.p
+    s = firsthalf * advencedEuclidAlgorithm(ec.p, secondhalf) % ec.p
 #    print("This is s: " + str(s))
-    x_3 = (s ** 2 - P.x - P.x) % EC.p
-    y_3 = (s * (P.x - x_3) - P.y) % EC.p
-    print("The double of the given Point on the ElliptivCurve: y^2 = x^3 + " + str(EC.a) + "*x + " + str(EC.b) + " mod " + str(EC.p) + " is: \n" " 2P = (" + str(x_3) + ", " + str(y_3) + ")")
+    x_3 = (s ** 2 - p.x - p.x) % ec.p
+    y_3 = (s * (p.x - x_3) - p.y) % ec.p
+    print("The double of the given Point on the ElliptivCurve: y^2 = x^3 + " + str(ec.a) + "*x + " + str(ec.b) + " mod " + str(ec.p) + " is: \n" " 2P = (" + str(x_3) + ", " + str(y_3) + ")")
 
 
 def advencedEuclidAlgorithm(x: int, y: int) -> int:
@@ -118,16 +124,16 @@ def ggT(x: int, y: int) -> list:
     return ggTSteps
 
 
-def main(EC: object, P: object, Q: object):
+def main(ec: EllipticCurve, p: Point,    q: Point:)
     """
         Add a workflow for the code
     """
 
 
 if __name__ == "__main__":
-    EC = EllipticCurve(2, 2, 17)
-    P = Point(7, 6)
-    Q = Point(3, 5)
+    ec = EllipticCurve(2, 2, 17)
+    p = Point(7, 6)
+    q = Point(3, 5)
+    p.checksIfPointOnCurve(ec)
 
-    addThePoint(EC, P, Q)
     print(__name__)
