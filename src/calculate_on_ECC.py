@@ -124,7 +124,7 @@ def ggT(x: int, y: int) -> list:
     return ggTSteps
 
 
-def main(ec: EllipticCurve, p: Point,    q: Point:)
+def main(ec: EllipticCurve, p: Point,    q: Point):
     """
         Add a workflow for the code
     """
